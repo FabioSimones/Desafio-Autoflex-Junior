@@ -20,9 +20,6 @@ public class ProdutoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "codigo", nullable = false, unique = true, length = 50)
-    private String codigo;
-
     @Column(name = "nome", nullable = false, length = 120)
     private String nome;
 
