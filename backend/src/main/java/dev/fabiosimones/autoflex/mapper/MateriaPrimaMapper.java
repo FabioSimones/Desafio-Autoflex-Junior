@@ -7,7 +7,7 @@ import dev.fabiosimones.autoflex.entities.MateriaPrimaEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MateriaPrimaMapper implements MapperGenerico<MateriaPrimaEntity, MateriaPrimaResponse, MateriaPrimaCriacaoRequest> {
+public class MateriaPrimaMapper implements MapperGenerico<MateriaPrimaEntity, MateriaPrimaResponse, MateriaPrimaCriacaoRequest, MateriaPrimaAtualizacaoRequest> {
 
     @Override
     public MateriaPrimaResponse paraResponse(MateriaPrimaEntity entidade) {
@@ -27,7 +27,7 @@ public class MateriaPrimaMapper implements MapperGenerico<MateriaPrimaEntity, Ma
     }
 
     @Override
-    public void atualizarEntidade(MateriaPrimaCriacaoRequest request, MateriaPrimaEntity entidade) {
+    public void atualizarEntidade(MateriaPrimaAtualizacaoRequest request, MateriaPrimaEntity entidade) {
         entidade.setNome(request.nome());
         entidade.setQuantidadeEstoque(request.quantidadeEstoque());
     }

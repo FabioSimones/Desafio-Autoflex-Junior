@@ -1,13 +1,20 @@
 package dev.fabiosimones.autoflex.mapper;
 
+import dev.fabiosimones.autoflex.dtos.request.MateriaPrimaAtualizacaoRequest;
 import dev.fabiosimones.autoflex.dtos.request.ProdutoAtualizacaoRequest;
 import dev.fabiosimones.autoflex.dtos.request.ProdutoCriacaoRequest;
 import dev.fabiosimones.autoflex.dtos.response.ProdutoResponse;
+import dev.fabiosimones.autoflex.entities.MateriaPrimaEntity;
 import dev.fabiosimones.autoflex.entities.ProdutoEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProdutoMapper implements MapperGenerico<ProdutoEntity, ProdutoResponse, ProdutoCriacaoRequest> {
+public class ProdutoMapper implements MapperGenerico<
+        ProdutoEntity,
+        ProdutoResponse,
+        ProdutoCriacaoRequest,
+        ProdutoAtualizacaoRequest
+        > {
 
     @Override
     public ProdutoResponse paraResponse(ProdutoEntity entidade) {
@@ -27,9 +34,8 @@ public class ProdutoMapper implements MapperGenerico<ProdutoEntity, ProdutoRespo
     }
 
     @Override
-    public void atualizarEntidade(ProdutoCriacaoRequest request, ProdutoEntity entidade) {
+    public void atualizarEntidade(ProdutoAtualizacaoRequest request, ProdutoEntity entidade) {
         entidade.setNome(request.nome());
         entidade.setValor(request.valor());
     }
-
 }

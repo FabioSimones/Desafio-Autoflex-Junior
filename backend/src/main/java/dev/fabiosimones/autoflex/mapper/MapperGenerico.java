@@ -1,10 +1,10 @@
 package dev.fabiosimones.autoflex.mapper;
 
-public interface MapperGenerico <ENTIDADE, RESPONSE, REQUEST_CRIACAO>{
+public interface MapperGenerico <ENTIDADE, RESPONSE, REQ_CRIACAO, REQ_ATUALIZACAO> {
 
     RESPONSE paraResponse(ENTIDADE entidade);
 
-    ENTIDADE paraEntidade(REQUEST_CRIACAO request);
+    ENTIDADE paraEntidade(REQ_CRIACAO request);
 
-    void atualizarEntidade(REQUEST_CRIACAO request, ENTIDADE entidade);
+    void atualizarEntidade(REQ_ATUALIZACAO request, ENTIDADE entidade);
 }
