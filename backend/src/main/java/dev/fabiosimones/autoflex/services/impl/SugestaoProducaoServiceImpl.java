@@ -27,14 +27,20 @@ public class SugestaoProducaoServiceImpl implements SugestaoProducaoService {
     @Transactional(readOnly = true)
     public SugestaoProducaoResponse calcularSugestao() {
 
-        List<ProdutoEntity> produtos = produtoRepository.findAll();
-        produtos.sort(Comparator.comparing(ProdutoEntity::getValor, Comparator.nullsFirst(BigDecimal::compareTo)).reversed());
+        List<ProdutoEntity> produtos = new ArrayList<>(produtoRepository.findAll());
+
+        produtos.sort(
+                Comparator.comparing(ProdutoEntity::getValor, Comparator.nullsFirst(BigDecimal::compareTo)).reversed()
+                        .thenComparing(ProdutoEntity::getId, Comparator.nullsLast(Long::compareTo))
+        );
 
         Set<Long> idsMaterias = produtos.stream()
+                .filter(p -> p.getMateriasPrimas() != null)
                 .flatMap(p -> p.getMateriasPrimas().stream())
                 .map(pm -> pm.getMateriaPrima().getId())
                 .collect(Collectors.toSet());
 
+        // Carrega estoque atual das matérias-primas envolvidas
         Map<Long, BigDecimal> estoque = new HashMap<>();
         if (!idsMaterias.isEmpty()) {
             List<MateriaPrimaEntity> materias = materiaPrimaRepository.findAllById(idsMaterias);
@@ -85,7 +91,10 @@ public class SugestaoProducaoServiceImpl implements SugestaoProducaoService {
             BigDecimal necessario = pm.getQuantidadeNecessaria();
 
             if (necessario == null || necessario.compareTo(BigDecimal.ZERO) <= 0) {
-                return 0;
+                throw new IllegalArgumentException(
+                        "Quantidade necessária deve ser maior que zero. ProdutoId=" + produto.getId()
+                                + ", MateriaPrimaId=" + materiaId
+                );
             }
 
             BigDecimal possivel = disponivel.divide(necessario, 0, RoundingMode.FLOOR); // inteiro
@@ -94,9 +103,7 @@ public class SugestaoProducaoServiceImpl implements SugestaoProducaoService {
             }
         }
 
-        if (min == null) return 0;
-        if (min.compareTo(BigDecimal.ZERO) <= 0) return 0;
-
+        if (min == null || min.compareTo(BigDecimal.ZERO) <= 0) return 0;
         return min.longValue();
     }
 
