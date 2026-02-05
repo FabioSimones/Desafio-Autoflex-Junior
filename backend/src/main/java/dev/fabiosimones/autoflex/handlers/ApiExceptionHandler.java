@@ -1,11 +1,13 @@
 package dev.fabiosimones.autoflex.handlers;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.OffsetDateTime;
@@ -48,6 +50,18 @@ public class ApiExceptionHandler {
         body.put("erro", "Validação");
         body.put("mensagem", "Existem campos inválidos.");
         body.put("campos", campos);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", OffsetDateTime.now().toString());
+        body.put("status", 400);
+        body.put("erro", "Validação");
+        body.put("mensagem", "Existem campos inválidos.");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }

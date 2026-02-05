@@ -6,6 +6,7 @@
         <div class="flex gap-3 text-sm">
           <router-link to="/" class="hover:text-blue-600">Início</router-link>
           <router-link to="/produtos" class="hover:text-blue-600">Produtos</router-link>
+          <router-link to="/materias-primas" class="hover:text-blue-600">Matérias primas</router-link>
         </div>
       </div>
     </nav>

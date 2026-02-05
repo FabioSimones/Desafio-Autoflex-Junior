@@ -18,7 +18,6 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .exposedHeaders("*");
-                // .allowCredentials(true); // só use se tiver cookie/session
             }
         };
     }
