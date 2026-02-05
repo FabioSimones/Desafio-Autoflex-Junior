@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+
 import java.util.HashSet;
 
 @Service
@@ -22,6 +26,9 @@ public class EstruturaProdutoServiceImpl implements EstruturaProdutoService {
     private final ProdutoRepository produtoRepository;
     private final MateriaPrimaRepository materiaPrimaRepository;
     private final EstruturaProdutoMapper estruturaProdutoMapper;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,6 +56,8 @@ public class EstruturaProdutoServiceImpl implements EstruturaProdutoService {
 
         produto.getMateriasPrimas().clear();
 
+        em.flush();
+
         for (var item : request.itens()) {
             var materia = materiaPrimaRepository.findById(item.materiaPrimaId())
                     .orElseThrow(() -> new EntityNotFoundException("Matéria-prima não encontrada: id=" + item.materiaPrimaId()));
@@ -65,4 +74,5 @@ public class EstruturaProdutoServiceImpl implements EstruturaProdutoService {
         ProdutoEntity salvo = produtoRepository.save(produto);
         return estruturaProdutoMapper.paraDetalhadoResponse(salvo);
     }
+
 }
