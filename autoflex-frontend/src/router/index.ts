@@ -1,15 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '../pages/HomePage.vue'
 import ProdutosPage from '../pages/ProdutosPage.vue'
 import MateriasPrimasPage from '../pages/MateriasPrimasPage.vue'
+import SugestaoProducaoPage from '../pages/SugestaoProducaoPage.vue'
 
-const router = createRouter({
+export default createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: HomePage },
+    { path: '/', redirect: '/produtos' },
     { path: '/produtos', component: ProdutosPage },
-    { path: '/materias-primas', component: MateriasPrimasPage }
+    { path: '/materias-primas', component: MateriasPrimasPage },
+    { path: '/sugestao-producao', component: SugestaoProducaoPage }
   ]
 })
-
-export default router
